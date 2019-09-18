@@ -5,6 +5,7 @@
   "commands": [
     {
       "name": "generate",
+      "shortcut" : "ctrl shift g",
       "identifier": "plugin-name.my-command-identifier",
       "script": "./commands/my-command.js"
     }

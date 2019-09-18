@@ -20,13 +20,15 @@ myCommand = do
         Right layers -> do
             if length layers == 0 
                 then UI.alert "No Selection" "Please select a layer and try again..."
-                else  copy2Pasteboard =<< createViewFromLayer (head layers)
+                else do 
+                    UI.alert "Success ✅" "Copied view to clipboard"
+                    copy2Pasteboard $ createViewFromLayer (head layers)
 
 
-createViewFromLayer :: Maybe Layer -> Effect String 
-createViewFromLayer (Just (Text tl)) = pure $ (showTextLayer tl)
-createViewFromLayer (Just (Image tl)) = pure $ (showImageLayer tl)
-createViewFromLayer (Just (Shape tl)) = pure $ (showShapeLayer tl)
-createViewFromLayer (Just (Group tl)) = pure $ (showGroupLayer tl)
-createViewFromLayer _ = pure "unit" 
+createViewFromLayer :: Maybe Layer -> String 
+createViewFromLayer (Just (Text tl)) = showTextLayer tl
+createViewFromLayer (Just (Image tl)) = showImageLayer tl
+createViewFromLayer (Just (Shape tl)) = showShapeLayer tl
+createViewFromLayer (Just (Group tl)) = showGroupLayer tl
+createViewFromLayer _ = "unit" 
 
