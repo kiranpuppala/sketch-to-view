@@ -1,0 +1,18 @@
+{
+  "compatibleVersion": 3,
+  "bundleVersion": 1,
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "generate",
+      "identifier": "plugin-name.my-command-identifier",
+      "script": "./commands/my-command.js"
+    }
+  ],
+  "menu": {
+    "title": "Sketch To View",
+    "items": [
+      "plugin-name.my-command-identifier"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+    "name": "sketch-to-view",
+    "version": "1.0.0",
+    "author": {
+        "name": "Kiran Puppala",
+        "email": "kiranpuppala.96@gmail.com",
+        "url": "https://github.com/kiranpuppala"
+    },
+    "keywords": [
+        "sketch",
+        "plugin",
+        "purescript",
+        "template",
+        "functional",
+        "javascript",
+        "nodejs"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kiranpuppala/sketch-to-view.git"
+    },
+    "license": "MIT",
+    "private": false,
+    "scripts": {
+        "preinstall": "$npm_execpath --silent run checkyarn",
+        "checkyarn": "echo \"$npm_execpath\" | grep -q \"yarn\\.js$\" || (echo '⚠️  Use yarn not npm! ⚠️ ' && echo && exit 1)",
+        "postinstall": "yarn setup",
+        "setup": "yarn global add skpm; cd purescript; yarn install && bower i; cd ../sketch-plugin; yarn install;",
+        "build": "cd purescript; yarn run build; cd ../sketch-plugin; yarn run build",
+        "build-plugin": "cd sketch-plugin; yarn build",
+        "watch": "concurrently \"cd purescript; yarn run watch;\" \"cd sketch-plugin; yarn start;\"",
+        "clean": "rm -rf ./*.sketchplugin ./node_modules; cd ./purescript; yarn run clean; cd ../sketch-plugin; rm -rf ./node_modules;",
+        "start": "yarn build;"
+    },
+    "dependencies": {
+        "concurrently": "^4.1.0"
+    }
+}
