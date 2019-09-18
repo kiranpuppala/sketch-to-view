@@ -1,6 +1,4 @@
-![Purs Sketch Plugin](https://i.imgur.com/7fiVreJ.png)
-
-# Write Sketch Plugins in Purescript
+# Convert Sketch components to Android Views.
 
 Base project of Sketch to View generator plugin.
 
