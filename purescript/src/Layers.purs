@@ -1,11 +1,12 @@
 module Lib.Layers where
 
-import Prelude ((<>)) 
+import Data.Array ((!!))
+import Debug.Trace (spy)
+import Effect (Effect)
+import Lib.Parser (setCornerRadius, setFrame, setGroupStyle, setHidden, setImageStyle, setImageUrl, setShapeDrawable, setShapeStyle, setText, setTextStyle)
+import Prelude (Unit, (<>))
+import Sketch.Types (GroupLayer(..), ImageLayer(..), ShapeLayer(..), TextLayer(..))
 
-import Data.Array ((!!)) 
-
-import Sketch.Types (GroupLayer(..), ImageLayer(..), ShapeLayer(..), TextLayer(..)) 
-import Lib.Parser (setCornerRadius, setFrame, setGroupStyle, setHidden, setImageStyle, setImageUrl, setShapeStyle, setText, setTextStyle) 
 
 showTextLayer :: TextLayer -> String
 showTextLayer (TextLayer t) = 
@@ -34,13 +35,22 @@ showImageLayer (ImageLayer i) =
   "  />"
 
 showShapeLayer :: ShapeLayer -> String
-showShapeLayer (ShapeLayer s) = 
+showShapeLayer sl@(ShapeLayer s) = do 
   case s.shapeType of 
     "Rectangle" -> "<LinearLayout \n" <> 
                     setFrame s.frame <>
                     setHidden s.hidden <>
                     setShapeStyle s.style <>
                     " />"
+
+    "Oval" -> "<LinearLayout \n" <> 
+                setFrame s.frame <>
+                setHidden s.hidden <>
+                " />\n"<> 
+                (setShapeDrawable "oval" s.style)
     _ -> "<LinearLayout \n" <> 
           setFrame s.frame <>
+          setShapeStyle s.style <>
           " />"
+
+         

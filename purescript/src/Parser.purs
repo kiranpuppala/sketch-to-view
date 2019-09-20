@@ -78,13 +78,13 @@ setBackground (Just fills) = do
                       in "  , gradient $ " <> gradientType <> " " <> degree <> " [" <> colors <> "]\"\n" 
         _ -> " android:background = "<> show (makeColorStr a.color) <> "\n"
 
--- setBorder :: Maybe (Array Border) -> String
--- setBorder Nothing = ""
--- setBorder (Just borders) = do
---   let enabledBorders = filter (\(Border a) -> a.enabled) borders 
---   case enabledBorders !! 0 of
---     Nothing -> ""
---     Just (Border a) -> ""
+setBorder :: Maybe (Array Border) -> String
+setBorder Nothing = ""
+setBorder (Just borders) = do
+  let enabledBorders = filter (\(Border a) -> a.enabled) borders 
+  case enabledBorders !! 0 of
+    Nothing -> ""
+    Just (Border a) -> ""
 
 setShadow :: Maybe (Array Shadow) -> String
 setShadow Nothing = ""
@@ -141,3 +141,29 @@ setShapeStyle :: ShapeStyle -> String
 setShapeStyle (ShapeStyle s) =
   setOpacity s.opacity <>
   setBackground s.fills 
+
+setShapeDrawable :: String -> ShapeStyle -> String 
+setShapeDrawable shapeType (ShapeStyle s) = do
+  "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" <>
+  " <shape\n" <>
+  "     xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" <>
+  "     android:shape=\""<> shapeType <>"\">\n" <>
+  "     "<> (setShapeFills s.fills) <>
+  "     "<> (setShapeBorders s.borders)<>
+  "</shape>\n"
+
+setShapeFills :: Maybe (Array Fill) -> String 
+setShapeFills Nothing = ""
+setShapeFills (Just fills) = case fills !! 0 of 
+    Nothing -> ""
+    Just (Fill a) -> case a.fill of
+      "Color" -> "<solid android:color=" <> show (makeColorStr a.color) <> "/>\n"
+      "Gradient" -> ""
+      _ -> ""
+
+setShapeBorders :: Maybe (Array Border) -> String 
+setShapeBorders Nothing = ""
+setShapeBorders (Just borders) = case borders !! 0 of 
+  Nothing -> ""
+  Just (Border a) -> "<stroke android:color=" <> show (makeColorStr a.color) <> "android:width=\""<> (show a.thickness) <> "dp\"/>\n"
+

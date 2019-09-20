@@ -1,10 +1,13 @@
 module Lib.Utils where
 
-import Prelude (show, otherwise, (<>), (>=)) 
-import Data.String (toUpper) 
-import Data.String.CodePoints (splitAt) 
-  
+import Data.String (toUpper)
+import Data.String.CodePoints (splitAt)
+import Effect (Effect)
+import Prelude (Unit, otherwise, show, (<>), (>=))
 foreign import _parseInt :: String -> Int -> Number
+
+foreign import logit :: forall a. a -> Effect Unit
+
 
 data Radix 
   = Bin 

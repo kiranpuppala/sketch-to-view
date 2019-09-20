@@ -6,3 +6,9 @@ exports._parseInt = function (hex) {
         return parseInt(hex, radInt);
     }
 }
+
+exports.logit = function (a) {
+    return function(){
+        console.log("Logging:",a);
+    }
+}
