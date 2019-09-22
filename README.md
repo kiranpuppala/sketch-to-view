@@ -2,7 +2,10 @@
 
 Base project of Sketch to View generator plugin.
 
-## Plugin Download
+## Plugin
+
+![Sketch To View GIF](https://media.giphy.com/media/lodfxE2mi0H15h4hZN/giphy.gif)
+
 
 [Download](Sketch-To-View.sketchplugin.zip) and unzip the plugin. Add it to your sketch plugins folder.
 
