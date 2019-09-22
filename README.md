@@ -2,11 +2,11 @@
 
 Base project of Sketch to View generator plugin.
 
-## Development Guide
-
-Plugin Download
+# Plugin Download
 
 [Download](Sketch-To-View.sketchplugin.zip) and unzip the plugin. Add it to your sketch plugins folder.
+
+## Development Guide
 
 
 #### NOTE : Please make sure you have yarn :: [Installing yarn](https://yarnpkg.com/en/docs/install)
