@@ -2,7 +2,7 @@
 
 Base project of Sketch to View generator plugin.
 
-# Plugin Download
+## Plugin Download
 
 [Download](Sketch-To-View.sketchplugin.zip) and unzip the plugin. Add it to your sketch plugins folder.
 
