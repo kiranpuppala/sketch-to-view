@@ -1,20 +1,25 @@
 {
-  "compatibleVersion": 3,
-  "bundleVersion": 1,
-  "icon": "icon.png",
-  "commands": [
-    {
-      "name": "generate",
-      "shortcut" : "ctrl shift g",
-      "identifier": "sketch.view.plugin",
-      "script": "./commands/my-command.js"
+    "name" : "sketch-to-view",
+    "description" : "Generate android views from sketch",
+    "identifier" : "sketch.view.plugin",
+    "author" : "Kiran Puppala",
+    "compatibleVersion": 3,
+    "bundleVersion": 1,
+    "icon": "icon.png",
+    "commands": [
+      {
+        "name": "generate",
+        "shortcut" : "ctrl shift g",
+        "identifier": "sketch.view.plugin",
+        "script": "./commands/my-command.js"
+      }
+    ],
+    "menu": {
+      "title": "Sketch To View",
+      "items": [
+        "sketch.view.plugin"
+      ]
     }
-  ],
-  "menu": {
-    "title": "Sketch To View",
-    "items": [
-      "sketch.view.plugin"
-    ]
   }
-}
-
+  
+  

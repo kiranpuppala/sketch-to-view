@@ -1,6 +1,6 @@
 {
   "name": "sketch-to-view",
-  "description": "Plugin Description",
+  "description": "Generate android views from sketch",
   "version": "1.0.0",
   "engines": {
     "sketch": ">=49.0"
@@ -21,7 +21,11 @@
     "postinstall": "yarn build && skpm-link"
   },
   "devDependencies": {
-    "regenerator-runtime" : "latest",
+    "regenerator-runtime": "latest",
     "@skpm/builder": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kiranpuppala/sketch-to-view.git"
   }
 }
