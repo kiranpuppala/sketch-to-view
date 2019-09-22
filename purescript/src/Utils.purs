@@ -1,13 +1,19 @@
 module Lib.Utils where
 
+import Data.Newtype (class Newtype, unwrap)
 import Data.String (toUpper)
 import Data.String.CodePoints (splitAt)
 import Effect (Effect)
-import Prelude (Unit, otherwise, show, (<>), (>=))
+import Prelude (Unit, otherwise, show, (<>), (>=), ($))
 foreign import _parseInt :: String -> Int -> Number
 
 foreign import logit :: forall a. a -> Effect Unit
 
+infixl 5 extract as <.>
+
+  
+extract :: forall t a b. Newtype t a => t -> (a -> b) -> b
+extract a b = b $ unwrap a 
 
 data Radix 
   = Bin 

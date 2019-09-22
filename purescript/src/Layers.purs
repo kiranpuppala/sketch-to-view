@@ -1,11 +1,12 @@
 module Lib.Layers where
 
 import Data.Array ((!!))
+import Data.Maybe (Maybe(..))
 import Debug.Trace (spy)
 import Effect (Effect)
-import Lib.Parser (setCornerRadius, setFrame, setGroupStyle, setHidden, setImageStyle, setImageUrl, setShapeDrawable, setShapeStyle, setText, setTextStyle)
+import Lib.Parser (makeDrawable, setCornerRadius, setFrame, setGroupStyle, setHidden, setImageStyle, setImageUrl, setShapeStyle, setText, setTextStyle)
 import Prelude (Unit, (<>))
-import Sketch.Types (GroupLayer(..), ImageLayer(..), ShapeLayer(..), TextLayer(..))
+import Sketch.Types (GroupLayer(..), ImageLayer(..), Points(..), ShapeLayer(..), TextLayer(..))
 
 
 showTextLayer :: TextLayer -> String
@@ -35,22 +36,12 @@ showImageLayer (ImageLayer i) =
   "  />"
 
 showShapeLayer :: ShapeLayer -> String
-showShapeLayer sl@(ShapeLayer s) = do 
-  case s.shapeType of 
-    "Rectangle" -> "<LinearLayout \n" <> 
-                    setFrame s.frame <>
-                    setHidden s.hidden <>
-                    setShapeStyle s.style <>
-                    " />"
+showShapeLayer sl@(ShapeLayer s) =  do 
+  "<LinearLayout \n" <> 
+  setFrame s.frame <>
+  setHidden s.hidden <>
+  "android:background=\"@drawable/shape\"" <>
+  "/>\n\n" <>
+  makeDrawable sl
 
-    "Oval" -> "<LinearLayout \n" <> 
-                setFrame s.frame <>
-                setHidden s.hidden <>
-                " />\n"<> 
-                (setShapeDrawable "oval" s.style)
-    _ -> "<LinearLayout \n" <> 
-          setFrame s.frame <>
-          setShapeStyle s.style <>
-          " />"
-
-         
+ 

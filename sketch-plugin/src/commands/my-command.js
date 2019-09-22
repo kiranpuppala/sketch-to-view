@@ -1,3 +1,3 @@
 export default function () {
-    require('../scripts/output.js')["Main"].myCommand();
+    require('../scripts/output.js')["Main"].generate();
 }

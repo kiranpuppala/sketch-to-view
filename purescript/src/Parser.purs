@@ -1,17 +1,15 @@
 module Lib.Parser where
   
-import Prelude (map, show, ($), (*), (-), (/), (<>)) 
-
-import Data.Array (filter, (!!)) 
+import Data.Array (filter, foldl, (!!))
 import Data.Int (floor)
-import Data.Maybe (Maybe(..)) 
-import Data.String (joinWith, toLower, toUpper) 
-import Data.String.CodePoints (splitAt) 
-import Math (atan2, pi) 
-
-import Sketch.Types (Border(..), Fill(..), Frame(..), Gradient(..), GroupStyle(..), ImageStyle(..), Point(..), Points(..), Shadow(..), ShapeStyle(..), Stop(..), TextStyle(..)) 
-import Lib.Utils (Radix(..), makeColorStr, num2Str, parseNumber) 
-
+import Data.Maybe (Maybe(..))
+import Data.Newtype (class Newtype)
+import Data.String (joinWith, toLower, toUpper)
+import Data.String.CodePoints (splitAt)
+import Lib.Utils (Radix(..), makeColorStr, num2Str, parseNumber, (<.>))
+import Math (atan2, pi)
+import Prelude (map, show, ($), (*), (-), (/), (<>))
+import Sketch.Types (Border(..), Fill(..), Frame(..), Gradient(..), GroupStyle(..), ImageStyle(..), Point(..), Points(..), Shadow(..), ShapeLayer(..), ShapeStyle(..), Stop(..), TextStyle(..))
 
 -- | PARAMS -------------------------------------------------------------------
 
@@ -142,15 +140,45 @@ setShapeStyle (ShapeStyle s) =
   setOpacity s.opacity <>
   setBackground s.fills 
 
-setShapeDrawable :: String -> ShapeStyle -> String 
-setShapeDrawable shapeType (ShapeStyle s) = do
+makeDrawable :: ShapeLayer -> String 
+makeDrawable (ShapeLayer s) = do 
+  let fills = setShapeFills (s.style<.>_.fills)
+  let borders = setShapeBorders (s.style<.>_.borders) 
+  let corners = setShapeCorners (s.points)
+  let gradient = setGradient (s.style<.>_.fills)
+  "<!-- @drawable/shape.xml -->\n" <>
   "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" <>
-  " <shape\n" <>
-  "     xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" <>
-  "     android:shape=\""<> shapeType <>"\">\n" <>
-  "     "<> (setShapeFills s.fills) <>
-  "     "<> (setShapeBorders s.borders)<>
-  "</shape>\n"
+  "<shape\n" <>
+  "xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" <>
+  "android:shape=\""<> (toLower s.shapeType) <>"\">\n" <>
+  fills <>
+  borders <>
+  corners <>
+  "</shape>\n\n"<> 
+  gradient
+
+setGradient :: Maybe (Array Fill) -> String
+setGradient Nothing = ""
+setGradient (Just fills) = do
+  let enabledFills = filter (\(Fill a) -> a.enabled) fills 
+  case enabledFills !! 0 of
+    Nothing -> ""
+    Just (Fill a) -> do
+      case a.fill of
+        "Gradient" -> do
+            "/** Inheriting properties from R.drawable.shape. Change this to your shape name**/\n" <>
+            "GradientDrawable shapeDrawable= (GradientDrawable) ContextCompat.getDrawable(this,R.drawable.shape);\n" <>
+            "shapeDrawable.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);\n" <>
+            "shapeDrawable.setColors( new int[]{\n" <>
+            (getColorStops (unwrapGradientStops a.gradient)) <>
+            "});"
+        _ -> ""
+
+unwrapGradientStops :: Gradient -> Array Stop  --TODO Add newtype to stops type
+unwrapGradientStops (Gradient gradient) = gradient.stops
+
+getColorStops :: (Array Stop ) -> String 
+getColorStops stops = foldl (\acc (Stop v) -> acc <> ("Color.parseColor("<> show (makeColorStr v.color) <>"),") ) "" stops
 
 setShapeFills :: Maybe (Array Fill) -> String 
 setShapeFills Nothing = ""
@@ -159,11 +187,15 @@ setShapeFills (Just fills) = case fills !! 0 of
     Just (Fill a) -> case a.fill of
       "Color" -> "<solid android:color=" <> show (makeColorStr a.color) <> "/>\n"
       "Gradient" -> ""
-      _ -> ""
+      _ -> "" 
 
 setShapeBorders :: Maybe (Array Border) -> String 
 setShapeBorders Nothing = ""
 setShapeBorders (Just borders) = case borders !! 0 of 
   Nothing -> ""
-  Just (Border a) -> "<stroke android:color=" <> show (makeColorStr a.color) <> "android:width=\""<> (show a.thickness) <> "dp\"/>\n"
+  Just (Border a) -> "<stroke android:color=" <> show (makeColorStr a.color) <> " android:width=\""<> (show a.thickness) <> "dp\"/>\n"
 
+setShapeCorners :: (Array Points) -> String 
+setShapeCorners points = case points !! 0 of 
+  Nothing -> ""
+  Just (Points a) -> "<corners android:radius=\"" <> (show a.cornerRadius) <> "dp\"/>\n"

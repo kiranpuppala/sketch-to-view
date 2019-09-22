@@ -9,6 +9,6 @@ exports._parseInt = function (hex) {
 
 exports.logit = function (a) {
     return function(){
-        console.log("Logging:",a);
+        console.log("Logging:",JSON.stringify(a));
     }
 }
