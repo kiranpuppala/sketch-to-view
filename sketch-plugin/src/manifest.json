@@ -6,14 +6,14 @@
     {
       "name": "generate",
       "shortcut" : "ctrl shift g",
-      "identifier": "plugin-name.my-command-identifier",
+      "identifier": "sketch.view.plugin",
       "script": "./commands/my-command.js"
     }
   ],
   "menu": {
     "title": "Sketch To View",
     "items": [
-      "plugin-name.my-command-identifier"
+      "sketch.view.plugin"
     ]
   }
 }
