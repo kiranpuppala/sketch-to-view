@@ -7,7 +7,28 @@ Base project of Sketch to View generator plugin.
 ![Sketch To View GIF](https://media.giphy.com/media/lodfxE2mi0H15h4hZN/giphy.gif)
 
 
-[Download](Sketch-To-View.sketchplugin.zip) and unzip the plugin. Add it to your sketch plugins folder.
+
+
+
+## Usage
+
+### Step1: Add the plugin 
+
+1. [Download](Sketch-To-View.sketchplugin.zip) and unzip the plugin. 
+2. Open sketch and navigate to Plugins -> Manage Plugins -> Open Plugins Folder 
+3. Copy the unzipped plugin to Plugins folder. 
+4. Now you should be able to *Sketch To View* option in plugins. 
+
+### Step2: Generating Views
+
+1. Select any group or layer and type ctrl+shift+g and the android view gets 
+automatically copied to your clipboard. 
+
+#### Features 
+1. LinearLayouts with gradient, stroke, corner radius support. 
+2. Cicular shapes with gradient, stroke, corner radius support. 
+3. TextView 
+4. ImageView
 
 ## Development Guide
 
